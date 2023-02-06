@@ -31,7 +31,7 @@ function Participant({
   );
 }
 
-export default function AnimatedListExample(): React.ReactElement {
+export default function AnimatedSpringify(): React.ReactElement {
   const [inputValue, setInputValue] = useState("112");
   const [participantList, setParticipantList] = useState<EventParticipant[]>(
     []

@@ -1,63 +1,40 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-} from "@gorhom/bottom-sheet";
-import DatePicker from "react-native-date-picker";
+import React, { useState } from "react";
+import { Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
-import Animated, {
-  LightSpeedInRight,
-} from "react-native-reanimated";
+import Animated, { LightSpeedInRight } from "react-native-reanimated";
+import Modal from "react-native-modal";
 import Button from "../../components/Button";
-const CreatePlaceScreen = React.memo(() => {
-  const bottomSheetRef = useRef<BottomSheet>(null);
+import { Colors } from "../../constants/Colors";
+
+const AnimatedLayoutForTime = React.memo(() => {
   const [data, setData] = useState<string[]>([]);
-  const [visible, setVisible] = useState(-1);
-  // variables
-  const snapPoints = useMemo(() => ["50%"], []);
-
-  const onClose = () => {
-    setVisible(-1);
-  };
-  const onOpen = () => {
-    setVisible(0);
-  };
-
-  const renderBackdrop = React.useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        pressBehavior={"close"}
-      />
-    ),
-    [],
-  );
-  const handleSheetChanges = useCallback((index: number) => {
-    setVisible(index);
-  }, []);
   const [date, setDate] = useState(new Date());
-
-  const handleClosePress = (date: Date) => {
+  const [capsuleInc, setCapsuleInc] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [androidTime, setAndroidTime] = useState(false);
+  const addTime = (date: Date) => {
     const formatTime = format(date, "HH:mm:ss");
     setData(data => [...data, formatTime]);
-    bottomSheetRef.current?.close();
+    setIsModalVisible(!isModalVisible);
   };
+  console.log(data);
   const removeParticipant = (index: number) => {
     setData(data.filter((item, i) => i !== index));
   };
 
-  console.log(data);
+  const changedDate = (event: any, selectedTime: any) => {
+    setDate(selectedTime);
+    setAndroidTime(false);
+  };
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {data &&
         data.map((time, index) => {
           return (
-            <TouchableOpacity
-              key={index}
-              onPress={() => removeParticipant(index)}>
+            <TouchableOpacity key={index} onPress={() => removeParticipant(index)}>
               <Animated.View entering={LightSpeedInRight}>
                 <Text>{time}</Text>
                 <Text>X</Text>
@@ -65,35 +42,68 @@ const CreatePlaceScreen = React.memo(() => {
             </TouchableOpacity>
           );
         })}
-      <Button onPress={onOpen}  title={"Add"}  />
+      <Button onPress={() => setIsModalVisible(!isModalVisible)} title={"Add"} />
 
-      <BottomSheet
-        backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}
-        index={visible}
-        onChange={handleSheetChanges}
-        onClose={onClose}
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}>
-        <DatePicker
-          date={date}
-          locale="mn"
-          mode="time"
-          onDateChange={setDate}
-        />
-        <Button onPress={() => handleClosePress(date)} title={"aaa"} />
-      </BottomSheet>
-    </View>
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContainer}>
+          <Text>Цаг тохируулах</Text>
+          {Platform.OS === "ios" && (
+            <DateTimePicker
+              display={"spinner"}
+              is24Hour={true}
+              locale="mn"
+              maximumDate={new Date(2023, 15, 20)}
+              mode={"time"}
+              onChange={changedDate}
+              value={date}
+            />
+          )}
+
+          {Platform.OS === "android"
+            ? <Button onPress={() => setAndroidTime(!androidTime)} title={`Tsag songoh ${format(date, "HH:mm:ss")}`}  />
+            : null}
+          { androidTime && (
+            <DateTimePicker
+                  display={"default"}
+                  is24Hour={true}
+                  locale="mn"
+                  maximumDate={new Date(2023, 15, 20)}
+                  mode={"time"}
+                  onChange={changedDate}
+                  value={date}
+                />
+              )}
+          <View style={styles.incContainer}>
+            <TouchableOpacity disabled={capsuleInc === 0 ? true : false} onPress={() => setCapsuleInc(capsuleInc - 1)}>
+              <Text>1</Text>
+            </TouchableOpacity>
+            <Text>{capsuleInc} tsag </Text>
+            <TouchableOpacity onPress={() => setCapsuleInc(capsuleInc + 1)}>
+              <Text>3</Text>
+            </TouchableOpacity>
+          </View>
+          <Button onPress={() => addTime(date)} title="Хадгалах" />
+        </View>
+      </Modal>
+    </SafeAreaView>
   );
 });
 
-CreatePlaceScreen.displayName = "CreatePlaceScreen";
+AnimatedLayoutForTime.displayName = "AnimatedLayoutForTime";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  modalContainer: {
+    backgroundColor: Colors.white,
+  },
+  incContainer: {
+    flexDirection : "row",
+    justifyContent: "space-between",
+    borderWidth   : 1,
+    padding       : 10,
+  },
 });
 
-
-export default CreatePlaceScreen;
+export default AnimatedLayoutForTime;

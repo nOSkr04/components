@@ -15,6 +15,15 @@ const HomeScreen = () => {
       <TouchableOpacity onPress={() => navigation.navigate("SecondCarouselScreen")} style={styles.container}>
         <MonThin>Carousel - 2</MonThin>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("AnimatedLayoutForTime")} style={styles.container}>
+        <MonThin>Time nimate</MonThin>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("AnimatedSpringify")} style={styles.container}>
+        <MonThin>springify</MonThin>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")} style={styles.container}>
+        <MonThin>webview</MonThin>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -26,6 +35,7 @@ const styles = StyleSheet.create({
     flex         : 1,
     color        : Colors.white,
     flexDirection: "row",
+    flexWrap     : "wrap"
   },
   container: {
     width         : Layout.window.width * 0.3,

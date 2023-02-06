@@ -4,6 +4,9 @@ import { RootStackParamList } from "./types";
 import BottomTabNavigator from "./BottomTabNavigator";
 import CarouselScreen from "../screens/categories/CarouselScreen";
 import SecondCarouselScreen from "../screens/categories/SecondCarouselScreen";
+import AnimatedLayoutForTime from "../screens/categories/AnimatedLayoutForTime";
+import AnimatedSpringify from "../screens/categories/AnimatedSpringify";
+import WebViewScreen from "../screens/categories/WebView";
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -16,6 +19,9 @@ function RootNavigator() {
         <Stack.Screen component={BottomTabNavigator} name="Root" options={{ headerShown: false }} />
         <Stack.Screen component={CarouselScreen} name="CarouselScreen" options={{  }} />
         <Stack.Screen component={SecondCarouselScreen} name="SecondCarouselScreen" options={{  }} />
+        <Stack.Screen component={AnimatedLayoutForTime} name="AnimatedLayoutForTime" options={{  }} />
+        <Stack.Screen component={AnimatedSpringify} name="AnimatedSpringify" options={{  }} />
+        <Stack.Screen component={WebViewScreen} name="WebViewScreen" options={{ headerShown: false  }} />
       </Stack.Group>  
     </Stack.Navigator>
   );
