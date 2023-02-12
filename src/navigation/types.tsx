@@ -15,6 +15,7 @@ export type RootStackParamList = {
   AnimatedSpringify: undefined;
   AnimatedLayoutForTime: undefined;
   WebViewScreen: undefined;
+  MapScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, Screen>;

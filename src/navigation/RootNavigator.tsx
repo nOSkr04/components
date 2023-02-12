@@ -7,6 +7,7 @@ import SecondCarouselScreen from "../screens/categories/SecondCarouselScreen";
 import AnimatedLayoutForTime from "../screens/categories/AnimatedLayoutForTime";
 import AnimatedSpringify from "../screens/categories/AnimatedSpringify";
 import WebViewScreen from "../screens/categories/WebView";
+import MapScreen from "../screens/categories/Map";
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -22,6 +23,7 @@ function RootNavigator() {
         <Stack.Screen component={AnimatedLayoutForTime} name="AnimatedLayoutForTime" options={{  }} />
         <Stack.Screen component={AnimatedSpringify} name="AnimatedSpringify" options={{  }} />
         <Stack.Screen component={WebViewScreen} name="WebViewScreen" options={{ headerShown: false  }} />
+        <Stack.Screen component={MapScreen} name="MapScreen" options={{ headerShown: false  }} />
       </Stack.Group>  
     </Stack.Navigator>
   );

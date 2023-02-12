@@ -24,6 +24,9 @@ const HomeScreen = () => {
       <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")} style={styles.container}>
         <MonThin>webview</MonThin>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("MapScreen")} style={styles.container}>
+        <MonThin>map</MonThin>
+      </TouchableOpacity>
     </View>
   );
 };
